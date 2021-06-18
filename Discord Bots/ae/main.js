@@ -16,6 +16,7 @@ const { validateID } = require('ytdl-core');
 const disbut = require('discord-buttons')(client);
 
 
+
 client.on('ready' , () =>{
     console.log('AE is Online');
     client.user.setPresence('dnd'); 
@@ -47,6 +48,8 @@ client.on('message', message => {
             .addField ("\u200B ", Status)
             .addField ("\u200B ", `**Latency is** ${Date.now() - message.createdTimestamp}ms.`)
         message.channel.send(exampleEmbed);
+    
+    console.log(message.author.username+" Used 'ae status'")
     }
 })
 
@@ -65,18 +68,20 @@ client.on('message',message => {
         .setLabel('Invite here')
         .setURL('https://discord.com/api/oauth2/authorize?client_id=834508228791369729&permissions=66448448&scope=bot')
     message.channel.send('>>> Press to invite',button)
+
+    console.log(message.author.username+" Used 'ae invite'")
     }
 })
 
 
 
 
-//Bot Request (Horizon Only)
+//Bot Request
 
 
 client.on('message', message => {
     if(message.guild.id === '518893687627841574') {
-        if(message.channel.id != '843033025821933608')return;
+        if(message.channel.id != '842448142305984522')return;
         if(message.content.toLowerCase().startsWith(prefix + 'request')){
             if(message.author.bot)return;
             const args = message.content.slice(prefix.length).trim().split(' ')
@@ -93,7 +98,7 @@ client.on('message', message => {
             const copy = new Discord.MessageEmbed()
             .setColor('FF0000')
             .setTitle('Request by: '+message.author.username)
-            .setDescription('Requestet Bot: '+args[1])
+            .setDescription('Requestet Bot: '+args[1]+`\n \nInvite here: <https://discord.com/oauth2/authorize?client_id=${args[1]}&scope=bot&permissions=0>`)
             .setTimestamp()
             channel.send(copy)
         }
@@ -114,12 +119,45 @@ client.on('message', message => {
             .setDescription('Request by: '+args[2]+'\nConfirmed by: '+'<@'+message.author.id+'>')
             .setTimestamp()
             channel.send(copy)
-            message.channel.send(`<https://discord.com/oauth2/authorize?client_id=${args[1]}&scope=bot&permissions=0>`)
         }
     }
 })
-
-
+client.on('message', message => {
+    if(message.guild.id === '518893687627841574') {
+        if(message.channel.id != '843033025821933608')return;
+        if(message.content.toLowerCase().startsWith(prefix + 'deny')){
+            if(message.author.bot)return;
+            const args = message.content.slice(prefix.length).trim().split(' ')
+            if(args[1].length !=18)return;
+            
+            const channel = client.channels.cache.find(channel => channel.id === '842448142305984522')
+            const copy = new Discord.MessageEmbed()
+            .setColor('FF0000')
+            .setTitle('Bot '+args[1]+' **DENIED**')
+            .setDescription('Request by: '+args[2]+'\nDenied by: '+'<@'+message.author.id+'>')
+            .setTimestamp()
+            channel.send(copy)
+        }
+    }
+})
+client.on('message', message => {
+    if(message.guild.id === '518893687627841574') {
+        if(message.member.roles.cache.find(r => r.id === "843040323482681354")){
+            if(message.content.toLowerCase().startsWith(prefix + 'admin-help')){
+                if(message.author.bot)return;
+            
+                const help = new Discord.MessageEmbed()
+                    .setColor('YELLOW')
+                    .setTitle('Admin help on Horizon')
+                    .setDescription('confirm/deny only work in <#843033025821933608>')
+                    .addField('ae request {ID}', 'request a bot')
+                    .addField('ae confirm {ID} {@user.request}', 'Confirm a requestet bot')
+                    .addField('ae deny {ID} {@user.request}', 'Deny a bot request')
+                message.channel.send(help)
+            }
+        }
+    }
+})
 
 
 
@@ -133,6 +171,8 @@ client.on("message", message =>{
             .setTitle("My prefix is 'ae'")
             .setDescription("Use 'ae help' to see my commands")
         message.channel.send(embed)
+
+        console.log(message.author.username+" Used 'ae prefix'")
     }
 })
 
@@ -238,6 +278,8 @@ client.on('message',message => {
             }).then(message =>{
                 setTimeout(() => message.delete(),20000)
             })
+
+    console.log(message.author.username+" Used 'ae help'")
 }});
 client.on('clickButton', async (button) => {
     if (button.id === 'space') {
@@ -462,6 +504,8 @@ client.on('message', message =>{
 
     if(command === 'partner'){
         message.channel.send('<a:7945thinkbutcooler:837298122165190716> I have parnters?');
+
+    console.log(message.author.username+" Used 'ae partner'")
     }
 });
 
@@ -476,6 +520,8 @@ client.on('message', message => {
 
     if(command === 'ping'){
         message.channel.send(`**Latency is** ${Date.now() - message.createdTimestamp}ms.`)
+
+    console.log(message.author.username+" Used 'ae ping'")
     }
 });
 
@@ -488,6 +534,8 @@ client.on('message',message => {
     if(command === 'saturn') {
         message.channel.send('🪐').then(function(sentMessage) {
             sentMessage.react('🛰')
+
+    console.log(message.author.username+" Used 'ae saturn'")
         });
         
     }
@@ -525,6 +573,8 @@ client.on('message', message => {
 
     if(command === 'units'){
         message.channel.send('```Observable Universe dialmeter: 8,8x10^26 Billion Lightyears```')
+
+    console.log(message.author.username+" Used ''")
     }
 })
 
@@ -557,7 +607,10 @@ const exampleEmbed = new Discord.MessageEmbed()
 	.setTimestamp()
 	.setFooter('Bot by N0WH3RE Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834732229048926248/keplar-22b.jpg');
 
-message.channel.send(exampleEmbed)}});
+message.channel.send(exampleEmbed)
+
+console.log(message.author.username+" Used 'ae voyager1'")
+}});
 
 
 
@@ -588,7 +641,10 @@ const exampleEmbed = new Discord.MessageEmbed()
 	.setTimestamp()
 	.setFooter('Bot by N0WH3RE Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834732229048926248/keplar-22b.jpg');
 
-message.channel.send(exampleEmbed)}});
+message.channel.send(exampleEmbed)
+
+console.log(message.author.username+" Used 'ae voyager2'")
+}});
 
 
 
@@ -623,7 +679,10 @@ const exampleEmbed = new Discord.MessageEmbed()
 	.setTimestamp()
 	.setFooter('Bot by N0WH3RE Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834732229048926248/keplar-22b.jpg');
 
-message.channel.send(exampleEmbed)}});
+message.channel.send(exampleEmbed)
+
+console.log(message.author.username+" Used 'ae exo'")
+}});
 
 
 
@@ -647,6 +706,8 @@ client.on('message', message => {
                 .addField("\u200B", "**Event by:** The space itself")
                 .addField(" \u200B ", "https://www.timeanddate.com/astronomy/moon/super-full-moon.html \nhttps://www.timeanddate.com/eclipse/lunar/2021-may-26")
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae event'")
     }
 })
 
@@ -689,6 +750,7 @@ const exampleEmbed = new Discord.MessageEmbed()
 	.addFields(
 		{ name: 'Project by', value: '<@507511172061200395>' },
 		{ name: 'Project target', value: '1 Bot for everything' },
+        { name: 'Pages', value: '[__Homepage__](http://ae-0.ml)'},
         { name: 'Home server', value: '<a:4745_thisr:837316822842867763>[Horizon](https://discord.gg/YpXpHDWMyf)'},
 		{ name: 'Partner server', value:'[<a:4745_thisr:837316822842867763>Bot Testing Server](https://discord.gg/ahyzfEv)\n<a:4745_thisr:837316822842867763>[Recraft.net](https://discord.gg/8kKUtA2)'},
 		{ name: 'Partner', value: '<:3843_green_blue_arrow:837317710723285083>Silent Warrior K \n<:3843_green_blue_arrow:837317710723285083>Arzt\n<:3843_green_blue_arrow:837317710723285083>𝐗𝖊𝖗𝖚𝖓' },
@@ -698,7 +760,10 @@ const exampleEmbed = new Discord.MessageEmbed()
 	.setTimestamp()
 	.setFooter('Bot by N0WH3RE Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834732229048926248/keplar-22b.jpg');
 
-message.channel.send(exampleEmbed)}});
+message.channel.send(exampleEmbed)
+
+console.log(message.author.username+" Used 'ae about'")
+}});
 
 
 
@@ -720,6 +785,8 @@ client.on('message', message => {
             .addField(" \u200B ", "**Bot developer: <@507511172061200395>**")
             .addField(" \u200B ", Version)
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae stats'")
     }
 })
 client.on('message', message => {
@@ -749,8 +816,7 @@ client.on('message', message => {
             .setTitle("Patchnotes " +Version)
             .setThumbnail('https://cdn.discordapp.com/emojis/837292079734063145.gif?v=1')
             .setDescription (Version)
-                .addField("\u200B", "**- CMD updates** \nSome Commands were refreshed")
-                .addField("\u200B", "**- Fixed offline Bug** \nThe Bug that the bot will go off \nafter an inactive phase got fixed")
+            .addField("\u200B", "**- Website** \nThe bot now have a Website\nwhere you will see the latest news")
         message.channel.send(exampleEmbed);
     }
 })
@@ -777,6 +843,8 @@ client.on('message', message => {
                 .addField("\u200B", "**- Music feature:** \nWe are working on the client so you can use it to play music")
                 .addField("\u200b", "**- Fun commands:** \nWe are working on more fun commands")
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae updates'")
     }
 })
 
@@ -804,6 +872,8 @@ if (command === 'avatar') {
         .setDescription(args+"'s avatar")
         .setImage(user.avatarURL({dynamic: true, size: 512}))
     message.channel.send(exampleEmbed)
+
+    console.log(message.author.username+" Used 'ae avatar'")
 }});
 
 
@@ -841,12 +911,14 @@ client.on('message', message => {
         .setColor('#00FF00')
         .setTitle("NEWS!")
         .setURL('https://discord.gg/AVtUEfRQQw')
-        .setThumbnail('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI7SzHO7W5h1ORAvZooBSx1fyU-5x_U_KEvD-DW3LXf5GGJRYUF2rPboEQSZRyGJkOVFM&usqp=CAU')
+        .setThumbnail('https://icon-library.com/images/website-icon-png-black/website-icon-png-black-24.jpg')
         .setDescription('Version '+Version)
-        .addField("New help menu", "Help menu now fully work with buttons")
+        .addField("Website", "The bot now have a website \nChangelog switches to the website")
         .setTimestamp()
         message.channel.send(exampleEmbed);
         message.delete()
+
+    console.log(message.author.username+" Used 'ae news'")
     }
 })
 
@@ -867,6 +939,8 @@ client.on('message', message => {
             .setThumbnail('https://cdn.discordapp.com/icons/518893687627841574/5cd4cd808a3da88db8b9fad589a1c228.webp')
             .setDescription('Horizon<a:4745_thisr:837316822842867763>https://discord.gg/YpXpHDWMyf')
         message.channel.send(embed)
+
+    console.log(message.author.username+" Used 'ae news'")
         }
     }
 )
@@ -888,6 +962,8 @@ client.on('message', message => {
             .setThumbnail('https://www.wallpaperflare.com/static/765/775/653/errors-minimalism-typography-x-wallpaper.jpg')
             .setDescription('Use this Page to help me \nimprove the Bot')
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae bug'")
     }
 })
 
@@ -1027,6 +1103,8 @@ client.on('message', message => {
     ]
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         message.channel.send(randomMessage)
+
+    console.log(message.author.username+" Used 'ae artworks'")
     }
 });
 
@@ -1075,6 +1153,8 @@ client.on('message', message => {
         sentMessage.react('3️⃣')
         sentMessage.react('🇷')
         sentMessage.react('🇪')
+
+    console.log(message.author.username+" Used 'ae host'")
         })
     }
 })
@@ -1209,6 +1289,7 @@ client.on('message', message => {
     if(command === 'weather'){
         message.channel.send('>>> The weather in your desired region' + `\nhttps://www.wunderground.com/weather/de/${args}`)
         
+    console.log(message.author.username+" Used 'ae weather'")
     }
 })
 
@@ -1288,6 +1369,7 @@ client.on('message', message => {
             args>randomMessage
             message.channel.send("You won!"); return;
         }
+    console.log(message.author.username+" Used 'ae rps'")
     };
 });
 
@@ -1310,6 +1392,7 @@ client.on('message', message => {
                     .setTitle(args)
                 message.channel.send(embed)
                 
+    console.log(message.author.username+" Used 'ae ram'")
         }
     }
 })
@@ -1332,6 +1415,8 @@ client.on('message', message => {
             .setTitle(args[1])
             .setDescription(args[2]+' '+args[3]+' '+args[4]+' '+args[5]+' '+args[6])
         message.channel.send(embed)
+
+    console.log(message.author.username+" Used 'ae embed'")
     }
 })
 
@@ -1355,6 +1440,8 @@ client.on("message", message =>{
             .setThumbnail('https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Gay_Pride_Flag.svg/2000px-Gay_Pride_Flag.svg.png')
             .setDescription('<@'+user+'>'+' is '+number+'% gay')
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae gay'")
     }
 })
 
@@ -1371,14 +1458,21 @@ client.on("message", message => {
         var command = args.shift().toLowerCase();
 
         if(command === 'nitro') {
-        message.channel.send('<https://discordgift.site/qjZMKR7aozxiXIgU>')
         const exampleEmbed = new Discord.MessageEmbed()
             .setColor('#FF00FF')
             .setTitle('Nitro')
             .setURL('https://discordgift.site/qjZMKR7aozxiXIgU')
             .setThumbnail('https://assets.discordgift.site/af917b75e7f1f34ad53088863e88d46cdd821d04/eaa84/assets/nitro.png')
             .setDescription('A WILD GIFT APPEARS! \nExpires in 48 hours')
-        message.channel.send(exampleEmbed)
+        const button = new disbut.MessageButton()
+            .setStyle('url')
+            .setLabel('Nitro')
+            .setURL('https://discordgift.site/qjZMKR7aozxiXIgU')
+        message.channel.send("https://discordgift.site/qjZMKR7aozxiXIgU", {
+            embed: exampleEmbed, button: button
+        }) 
+
+    console.log(message.author.username+" Used 'ae nitro'")
         }
     }
 )
@@ -1411,6 +1505,8 @@ client.on("message", message =>{
             .setTitle('Rating user '+user)
             .setDescription('User <@'+user+'>'+argument+number)
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae rate'")
     }
 })
 
@@ -1420,10 +1516,10 @@ client.on("message", message =>{
 
 //tic tac toe
 
-
+{
 new TicTacToe({ language: 'en', command: 'ae ttt' })
 .attach(client);
-
+}
 
 
 
@@ -1498,6 +1594,8 @@ client.on("message", message =>{
             .setTitle("KILL!")
             .setDescription('<@'+message.author+'> KILLED <@'+user+'>'+' with a '+randomMessage)
         message.channel.send(exampleEmbed);
+
+    console.log(message.author.username+" Used 'ae kill'")
     }
 })
 
@@ -1534,6 +1632,8 @@ client.on("message", message =>{
                 .setColor('#00FF00')
                 .setTitle('You survived')
             message.channel.send(embed1)
+
+    console.log(message.author.username+" Used 'ae roulette'")
          }
     }
 })
@@ -1620,8 +1720,11 @@ client.on('message',message => {
             .addField("1. What data do we store", "None, the bot do not have any databases \nbut it store informations ex. \n - Guild IDs \n - User IDs \n - User Avatars \n - Selected arguments \nin Variables, but they will be deleted \nWhen the command is finished")
             .addField("2. Critical fun commands", "The bot has fun commands which may name a \nuser inappropriately\n(marked with a red circle in the help menu)ex:\n - Test youre IQ(🔴)")
             .addField("3. Do we share youre data with any 3rd parties?", "No, we dont, why should we? Its a bot \nto help you have some fun on Discord")
+            .addField("4. Logs", "We only use a log on the help menu to help \nThe server moderation teams to detect \nSpam with buttons \n(of course bot will delete all messages \n(from the help menu) by itself) ")
             .setTimestamp()
         message.channel.send(embed)
+
+    console.log(message.author.username+" Used 'ae privacy'")
     }
 })
 
@@ -1649,6 +1752,8 @@ client.on('message', message => {
             .setURL('https://www.tiktok.com/@noxn_yt/video/6932231233329958150?utm_source=tt_20&lang=de-DE&is_copy_url=0&is_from_webapp=v1&sender_device=pc&sender_web_id=6945196189257057797')
 
         message.channel.send('best meme ever', { button: button, embed: embed});
+
+    console.log(message.author.username+" Used 'ae motto'")
     }
 })
 
@@ -1679,7 +1784,7 @@ client.on('clickButton', async (button) => {
       button.channel.send(`${button.clicker.user.tag} Has an IQ of `+number).then(message =>{
         setTimeout(() => message.delete(),5000)
     })
-    }
+    }console.log(message.author.username+" Used 'ae iq'")
 });
 
 
@@ -1768,10 +1873,12 @@ client.on('clickButton', async (button) => {
 
 keepAlive();
 
+
+
 //Console Log, Error Report
 
 process.on('unhandledRejection', error => {
 	console.error('Unhandled promise rejection:', error);
 });
 
-client.login('HIDDEN');
+client.login(process.env.token);
