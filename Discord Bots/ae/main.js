@@ -14,6 +14,8 @@ const Sequelize = require("sequelize");
 const TicTacToe = require ("discord-tictactoe");
 const { validateID } = require('ytdl-core');
 const disbut = require('discord-buttons')(client);
+const fs = require('fs');
+const got = require ('got');
 
 
 
@@ -30,7 +32,7 @@ client.on('ready' , () =>{
 
 //variables
 
-var Version = ('2.4.3');
+var Version = ('2.5.0');
 
 var Color = ('#00FF00')
 var Status = ('✅ Bot online')
@@ -299,8 +301,6 @@ client.on('message',message => {
             }).then(message =>{
                 setTimeout(() => message.delete(),20000)
             })
-
-    console.log(message.author.username+" Used 'ae help'")
 }});
 client.on('clickButton', async (button) => {
     if (button.id === 'space') {
@@ -358,7 +358,7 @@ client.on('clickButton', async (button) => {
         button.defer()
         const exampleEmbed = new Discord.MessageEmbed()
             .setColor('#00FF00')
-            .setTitle('```User help menu of Æ-𝜃```')
+            .setTitle('```Client help menu of Æ-𝜃```')
             .setURL()
             .setAuthor('Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834730896745693234/letter-a-and-e-logo-ae-ligature-symbol-vector-20420938.jpg')
             .setDescription('﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌')
@@ -391,7 +391,7 @@ client.on('clickButton', async (button) => {
             .setThumbnail()
             .addFields(
                 { name: '┍ae join', value: '┃Join your current voice channel' },
-                { name: '┃ae leave', value: '┕Leave current voice channel' },
+                { name: '┠ae leave', value: '┕Leave current voice channel' },
             )
             .setImage()
             .setTimestamp()
@@ -411,8 +411,11 @@ client.on('clickButton', async (button) => {
             .setAuthor('Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834730896745693234/letter-a-and-e-logo-ae-ligature-symbol-vector-20420938.jpg')
             .setDescription('﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌')
             .setThumbnail()
+            .addField('Info:', 'If there is no error, \nthe bot has not enough permissions \nModeration require: \n- MANAGE_MESSAGES \n- KICK_MEMBERS \n- BAN_MEMBERS')
             .addFields(
-                { name: '┍ae kick {@user}', value: '┕Kick the mentioned user (disabled)' },
+                { name: '┍ae kick {@user}', value: '┃Kick the mentioned user' },
+                { name: '┠ae ban {@user}', value: '┃Ban the mentioned user' },
+                { name: '┠ae clear {@number}', value: '┕Clear specifc amount of messages' },
             )
             .setImage()
             .setTimestamp()
@@ -432,6 +435,7 @@ client.on('clickButton', async (button) => {
             .setAuthor('Æ-𝜃', 'https://cdn.discordapp.com/attachments/786654358670278656/834730896745693234/letter-a-and-e-logo-ae-ligature-symbol-vector-20420938.jpg')
             .setDescription('﹌﹌﹌﹌﹌﹌﹌﹌﹌﹌')
             .setThumbnail()
+            .addField('Info:', 'TicTacToe require: \n- MANAGE_MESSAGES')
             .addFields(
                 { name: '┍ae rps', value: '┃Play Rock, paper, scissors' },
                 { name: '┠ae ram', value: '┃Repeat after me \n┃(Client repeat message)' },
@@ -441,6 +445,7 @@ client.on('clickButton', async (button) => {
                 { name: '┠ae roulette', value: '┃Do 1 spin of russian roulette(🔴)' },
                 { name: '┠ae rate', value: '┃rate the mentioned user (🔴)' },
                 { name: '┠ae iq', value: '┃Test youre IQ(🔴)' },
+                { name: '┠ae meme', value: '┃Bot send a random meme' },
                 { name: '┠ae ttt (@user for pvp)', value: '┃Start a Tic Tac Toe mini game \n┕(If no user is mentiond against AI)'}        
             )
             .setImage()
@@ -913,9 +918,10 @@ client.on('message', message => {
         .setColor('#00FF00')
         .setTitle("NEWS!")
         .setURL('https://discord.gg/AVtUEfRQQw')
-        .setThumbnail('https://icon-library.com/images/website-icon-png-black/website-icon-png-black-24.jpg')
+        .setThumbnail('https://png.pngtree.com/png-vector/20190301/ourlarge/pngtree-vector-administration-icon-png-image_747092.jpg')
         .setDescription('Version '+Version)
-        .addField("Website", "The bot now have a website \nChangelog switches to the website")
+        .addField("Moderation", "We have started the \nModeration feature again")
+        .addField("\u200b", 'Till 20.07.2021')
         .setTimestamp()
         message.channel.send(exampleEmbed);
         message.delete()
@@ -982,29 +988,23 @@ client.on('message', message => {
 
 //join
 
-client.on('message', message => {
-    if(!message.content.startsWith(prefix)||message.author.bot) return;
-    if(!Discord.VoiceConnection) return;
-    
-    const args = message.content.slice(prefix.length).split(/ +/)
-    var command = args.shift().toLowerCase();
-
-    if(command === 'join'){ 
-        const connection = message.member.voice.channel.join();
-            
+client.on('message', async message => {
+    if(message.content.toLowerCase().startsWith(prefix+'join')){
+        if (message.author != Discord.VoiceConnection)
+    return message.channel.send(
+      "You need to be in a voice channel to play music!"
+    )
+        if (message.member.voice.channel) {
+            const connection = await message.member.voice.channel.join();
+            connection.play('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
+        }
     }
 });
-client.on('message', message => {
-    if(!message.content.startsWith(prefix)||message.author.bot) return;
-    if(!Discord.VoiceConnection) return; 
-
-    const args = message.content.slice(prefix.length).split(/ +/)
-    var command = args.shift().toLowerCase();
-
-
-    if(command === 'leave'){ 
-        const connection = message.member.voice.channel.leave();
-            
+client.on('message', async message => {
+    if(message.content.toLowerCase().startsWith(prefix+'leave')){
+        if (message.member.voice.channel) {
+            const connection = await message.member.voice.channel.leave();
+        }
     }
 });
 
@@ -1166,25 +1166,136 @@ client.on('message', message => {
 
 
 
+//ban command
+
+
+client.on('message', message => {
+    if (message.content.toLowerCase().startsWith(prefix + 'ban')){
+    if (
+        message.member.hasPermission('ADMINISTRATOR') ||
+        message.member.hasPermission('BAN_MEMBERS')
+    ) {
+        var member = message.mentions.users.first()
+        if (member) {
+        const targetMember = message.guild.members.cache.get(member.id)
+        targetMember.ban()
+
+        const embed1 = new Discord.MessageEmbed()
+            .setColor('GREEN')
+            .setTitle('Succes')
+            .setDescription(member+' has been banned by '+message.author.username)
+            .setTimestamp()
+
+        message.channel.send(embed1)
+    } else {
+        const embed2 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('Missing args \n- You have to mention someone')
+            .setTimestamp()
+        message.channel.send(embed2)
+    }
+    } else {
+        const embed3 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('You have no permissions to ban someone')
+            .setTimestamp()
+        message.channel.send(embed3)
+    }
+}})
+
+
+
+
+
 //kick command
 
 
 client.on('message', message => {
     if (message.content.toLowerCase().startsWith(prefix + 'kick')){
+    if (
+        message.member.hasPermission('ADMINISTRATOR') ||
+        message.member.hasPermission('KICK_MEMBERS')
+    ) {
+        var member = message.mentions.users.first()
+        if (member) {
+        const targetMember = message.guild.members.cache.get(member.id)
+        targetMember.kick()
 
-if (message.member.hasPermission("KICK_MEMBERS")) {
-    var member = message.mentions.users.first()
-    if (user) {
-        try {
-            member.kick();
-        } catch {
-            msg.reply("I do not have permissions to kick " + msg.members.mentions.first());
-        }
+        const embed1 = new Discord.MessageEmbed()
+            .setColor('GREEN')
+            .setTitle('Succes')
+            .setDescription(member+' has been kicked by '+message.author.username)
+            .setTimestamp()
+
+        message.channel.send(embed1)
     } else {
-        msg.reply("You do not have permissions to kick " + msg.members.mentions.first());
+        const embed2 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('Missing args \n- You have to mention someone')
+            .setTimestamp()
+        message.channel.send(embed2)
     }
-}
+    } else {
+        const embed3 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('You have no permissions to kick someone')
+            .setTimestamp()
+        message.channel.send(embed3)
+    }
 }})
+
+
+
+
+
+//clear command
+
+
+client.on("message", message =>{     
+    if(message.content.startsWith(prefix + 'clear')){       
+        const embed1 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('You have no permissions to clear')
+            .setTimestamp()
+        const embed2 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('Please specify how many \nmesssages should be cleared')
+            .setTimestamp()
+        const embed3 = new Discord.MessageEmbed()
+            .setColor('RED')
+            .setTitle('Failed')
+            .setDescription('Please choose a number over 0')
+            .setTimestamp()
+        
+        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply(embed1)         
+        const args = message.content.slice(prefix.length).trim().split(' ');         
+        let messsages = args[1]     
+        if(!args[1]) return message.channel.send(embed2)     
+        if(args[1]<1) return message.channel.send(embed3)
+        const embed4 = new Discord.MessageEmbed() 
+            .setColor('GREEN')
+            .setTitle('Succes')
+            .setDescription('I have deleted '+messsages+' messages')
+            .setTimestamp()
+        message.channel.bulkDelete(args[1]).then(message.channel.send(embed4).then(msg=>msg.delete({timeout:"5000"})))     
+    }    
+})
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1814,6 +1925,36 @@ client.on('clickButton', async (button) => {
     }
 })
 */
+
+
+
+
+
+//meme
+
+
+client.on('message', message =>{
+    if (message.content.toLowerCase().startsWith(prefix+'meme')) {
+        const embed = new Discord.MessageEmbed()
+        got('https://www.reddit.com/r/memes/random/.json').then(response => {
+            let content = JSON.parse(response.body);
+            let permalink = content[0].data.children[0].data.permalink;
+            let memeUrl = `https://reddit.com${permalink}`;
+            let memeImage = content[0].data.children[0].data.url;
+            let memeTitle = content[0].data.children[0].data.title;
+            let memeUpvotes = content[0].data.children[0].data.ups;
+            let memeDownvotes = content[0].data.children[0].data.downs;
+            let memeNumComments = content[0].data.children[0].data.num_comments;
+            embed.setTitle(`${memeTitle}`)
+            embed.setURL(`${memeUrl}`)
+            embed.setImage(memeImage)
+            embed.setColor('RANDOM')
+            embed.setFooter(`👍 ${memeUpvotes} 👎 ${memeDownvotes} 💬 ${memeNumComments}`)
+            message.channel.send(embed);
+        })
+    }
+})
+
 
 
 
